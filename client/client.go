@@ -6,8 +6,20 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/webstradev/pricefetcher/proto"
 	"github.com/webstradev/pricefetcher/types"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
+
+func NewGRPCClient(remoteAddr string) (proto.PriceFetcherClient, error) {
+	conn, err := grpc.Dial(remoteAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		return nil, err
+	}
+
+	return proto.NewPriceFetcherClient(conn), nil
+}
 
 type Client struct {
 	endpoint string
