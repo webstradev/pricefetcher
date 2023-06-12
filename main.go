@@ -8,7 +8,7 @@ func main() {
 	var (
 		jsonAddr = flag.String("jsonaddr", ":3000", "The listen address for the JSON Server")
 		grpcAddr = flag.String("grpcaddr", ":4000", "The listen address for the gRPC Server")
-		svc      = NewLoggingService(NewMetricService(&priceFetcher{}))
+		svc      = NewRateLimitService(NewMetricService(NewLoggingService((&priceFetcher{}))), 1)
 	)
 
 	flag.Parse()
