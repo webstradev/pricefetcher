@@ -33,5 +33,4 @@ func MockPriceFetcher(ctx context.Context, ticker string) (float64, error) {
 	}
 
 	return price, nil
-
 }
