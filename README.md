@@ -1,1 +1,1 @@
-# micro
+# PriceFetcher microservice
