@@ -5,13 +5,18 @@ import (
 )
 
 func main() {
-	listenAddr := flag.String("listenaddr", ":3000", "The listen address for the JSON Server")
+	var (
+		jsonAddr = flag.String("jsonaddr", ":3000", "The listen address for the JSON Server")
+		grpcAddr = flag.String("grpcaddr", ":4000", "The listen address for the gRPC Server")
+	)
+
 	flag.Parse()
 
 	svc := &priceFetcher{}
 	svcWithLoggingAndMetrics := NewLoggingService(NewMetricService(svc))
 
-	server := NewJSONAPIServer(*listenAddr, svcWithLoggingAndMetrics)
+	jsonServer := NewJSONAPIServer(*jsonAddr, svcWithLoggingAndMetrics)
+	jsonServer.Run()
 
-	server.Run()
+	makeGRPCServerAndRun(*grpcAddr, svcWithLoggingAndMetrics)
 }
