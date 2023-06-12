@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"math/rand"
 	"net/http"
 
+	"github.com/google/uuid"
 	"github.com/webstradev/pricefetcher/types"
 )
 
@@ -31,8 +31,9 @@ func (s *JSONAPIServer) Run() {
 }
 
 func makeHTTPHandlerFunc(apiFn APIFunc) http.HandlerFunc {
+	uuid := uuid.New()
 	ctx := context.Background()
-	ctx = context.WithValue(ctx, "requestID", rand.Intn(1_000_000))
+	ctx = context.WithValue(ctx, "requestID", uuid.String())
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := apiFn(ctx, w, r); err != nil {
