@@ -33,7 +33,7 @@ func (s *JSONAPIServer) Run() {
 func makeHTTPHandlerFunc(apiFn APIFunc) http.HandlerFunc {
 	uuid := uuid.New()
 	ctx := context.Background()
-	ctx = context.WithValue(ctx, "requestID", uuid.String())
+	ctx = context.WithValue(ctx, keyRequestID, uuid.String())
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := apiFn(ctx, w, r); err != nil {
